@@ -4,11 +4,15 @@ events.listen("player.tick",function(event){
 		var player=event.player;
 		var current={x:player.x,y:player.y,z:player.z,pitch:player.pitch,yaw:player.yaw,mx:player.motionX,my:player.motionY,mz:player.motionZ};
 		if(!lastPoint){
-			lastPoint=current;
+			lastPoint={};
+		}
+		if(!lastPoint[player.id]){
+			lastPoint[player.id]=current;
 		}else{
-			player.setPositionAndRotation(lastPoint.x,lastPoint.y,lastPoint.z,lastPoint.yaw,lastPoint.pitch);
-			player.setMotion(lastPoint.mx,lastPoint.my,lastPoint.mz);
-			lastPoint=current;
+			var lp=lastPoint[player.id]
+			player.setPositionAndRotation(lp.x,lp.y,lp.z,lp.yaw,lp.pitch);
+			player.setMotion(lp.mx,lp.my,lp.mz);
+			lastPoint[player.id]=current;
 		}
 	}
 });
